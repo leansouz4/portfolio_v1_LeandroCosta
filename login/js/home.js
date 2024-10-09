@@ -12,12 +12,36 @@ Write a function to check if a user is logged
 */
 
 
+function authStateListener() {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      var uid = user.uid
+    } else {
+      signOut()
+      location.href = 'index.html'
+    }
+  })
+}
+
 window.addEventListener('load', function () {
+  //Listen for auth state changes
+  authStateListener()
 
-    //Listen for auth state changes
-    firebase.auth().onAuthStateChanged(onAuthStateChanged);
+  document.getElementById('sign-out').addEventListener('click', function () {
+    signOut()
+  })
+})
 
-    //Implement SignOut Function
 
-
-});
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    })
+  // [END auth_sign_out]
+}
